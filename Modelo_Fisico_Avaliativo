@@ -1,0 +1,190 @@
+/* Modelo_Logico_Avaliativo: */
+
+CREATE TABLE Usuario_ (
+    Id_Usuario Number(8) PRIMARY KEY,
+    Nome_Usuario String(250),
+    Data_Nascimento Number(8),
+    CPF Number(11),
+    Endereco String(240)
+);
+
+CREATE TABLE Conteudo (
+    Id Number(8) PRIMARY KEY,
+    Nome_Conteudo String(7),
+    Tempo_Duracao Number(2),
+    Data Number(8)
+);
+
+CREATE TABLE Playlist_ (
+    Id_Playlist Number(8) PRIMARY KEY,
+    Id_Musicas Number(8),
+    fk_Usuario__Id_Usuario Number(8)
+);
+
+CREATE TABLE Artista (
+    Id_Artista Number(8) PRIMARY KEY,
+    Nome_Artista String(250),
+    Conteudo_Artista_ String(7),
+    CPF Number(11),
+    Data_Nascimento Number(8)
+);
+
+CREATE TABLE Match (
+    Id_Usuarios String(8) PRIMARY KEY,
+    Nome_Usuarios String(240),
+    Playlist_Match String(350)
+);
+
+CREATE TABLE Modo (
+    Id_Modo Number(8) PRIMARY KEY,
+    Nome_Modo String(9),
+    fk_Usuario__Id_Usuario Number(8)
+);
+
+CREATE TABLE _Tem (
+    fk_Playlist__Id_Playlist Number(8),
+    fk_Conteudo_Id Number(8)
+);
+
+CREATE TABLE Musica_ (
+    Nome_Autor String(250),
+    Nome_Cantor(250) String(250),
+    fk_Conteudo_Id Number(8) PRIMARY KEY
+);
+
+CREATE TABLE Podcast_ (
+    Nome_Pessoa String(250),
+    fk_Conteudo_Id Number(8) PRIMARY KEY
+);
+
+CREATE TABLE _Tem (
+    fk_Conteudo_Id Number(8),
+    fk_Artista_Id_Artista Number(8)
+);
+
+CREATE TABLE _Playlist (
+    fk_Match_Id_Usuarios String(8),
+    fk_Playlist__Id_Playlist Number(8)
+);
+
+CREATE TABLE Favoritados (
+    Id_Favoritados_ Number(8) PRIMARY KEY,
+    Numero_Favoritados Number(10),
+    Nome_Favoritados String(250),
+    fk_Usuario__Id_Usuario Number(8)
+);
+
+CREATE TABLE _Tem (
+    fk_Favoritados_Id_Favoritados_ Number(8),
+    fk_Conteudo_Id Number(8)
+);
+
+CREATE TABLE Premium (
+    Pago String(10),
+    Modo_Offline_ String(7),
+    Sem_Anuncio String(10),
+    fk_Modo_Id_Modo Number(8) PRIMARY KEY
+);
+
+CREATE TABLE Gratuito (
+    Gratuito String(8),
+    Tem_Anuncios String(3),
+    fk_Modo_Id_Modo Number(8) PRIMARY KEY
+);
+
+CREATE TABLE Realiza (
+    fk_Usuario__Id_Usuario Number(8),
+    fk_Match_Id_Usuarios String(8)
+);
+
+CREATE TABLE Escuta (
+    fk_Usuario__Id_Usuario Number(8),
+    fk_Conteudo_Id Number(8)
+);
+ 
+ALTER TABLE Playlist_ ADD CONSTRAINT FK_Playlist__2
+    FOREIGN KEY (fk_Usuario__Id_Usuario)
+    REFERENCES Usuario_ (Id_Usuario)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Modo ADD CONSTRAINT FK_Modo_2
+    FOREIGN KEY (fk_Usuario__Id_Usuario)
+    REFERENCES Usuario_ (Id_Usuario)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE _Tem ADD CONSTRAINT FK__Tem_1
+    FOREIGN KEY (fk_Playlist__Id_Playlist)
+    REFERENCES Playlist_ (Id_Playlist);
+ 
+ALTER TABLE _Tem ADD CONSTRAINT FK__Tem_2
+    FOREIGN KEY (fk_Conteudo_Id)
+    REFERENCES Conteudo (Id);
+ 
+ALTER TABLE Musica_ ADD CONSTRAINT FK_Musica__2
+    FOREIGN KEY (fk_Conteudo_Id)
+    REFERENCES Conteudo (Id)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Podcast_ ADD CONSTRAINT FK_Podcast__2
+    FOREIGN KEY (fk_Conteudo_Id)
+    REFERENCES Conteudo (Id)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE _Tem ADD CONSTRAINT FK__Tem_1
+    FOREIGN KEY (fk_Conteudo_Id)
+    REFERENCES Conteudo (Id);
+ 
+ALTER TABLE _Tem ADD CONSTRAINT FK__Tem_2
+    FOREIGN KEY (fk_Artista_Id_Artista)
+    REFERENCES Artista (Id_Artista);
+ 
+ALTER TABLE _Playlist ADD CONSTRAINT FK__Playlist_1
+    FOREIGN KEY (fk_Match_Id_Usuarios)
+    REFERENCES Match (Id_Usuarios);
+ 
+ALTER TABLE _Playlist ADD CONSTRAINT FK__Playlist_2
+    FOREIGN KEY (fk_Playlist__Id_Playlist)
+    REFERENCES Playlist_ (Id_Playlist);
+ 
+ALTER TABLE Favoritados ADD CONSTRAINT FK_Favoritados_2
+    FOREIGN KEY (fk_Usuario__Id_Usuario)
+    REFERENCES Usuario_ (Id_Usuario)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE _Tem ADD CONSTRAINT FK__Tem_1
+    FOREIGN KEY (fk_Favoritados_Id_Favoritados_)
+    REFERENCES Favoritados (Id_Favoritados_);
+ 
+ALTER TABLE _Tem ADD CONSTRAINT FK__Tem_2
+    FOREIGN KEY (fk_Conteudo_Id)
+    REFERENCES Conteudo (Id);
+ 
+ALTER TABLE Premium ADD CONSTRAINT FK_Premium_2
+    FOREIGN KEY (fk_Modo_Id_Modo)
+    REFERENCES Modo (Id_Modo)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Gratuito ADD CONSTRAINT FK_Gratuito_2
+    FOREIGN KEY (fk_Modo_Id_Modo)
+    REFERENCES Modo (Id_Modo)
+    ON DELETE CASCADE;
+ 
+ALTER TABLE Realiza ADD CONSTRAINT FK_Realiza_1
+    FOREIGN KEY (fk_Usuario__Id_Usuario)
+    REFERENCES Usuario_ (Id_Usuario)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Realiza ADD CONSTRAINT FK_Realiza_2
+    FOREIGN KEY (fk_Match_Id_Usuarios)
+    REFERENCES Match (Id_Usuarios)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Escuta ADD CONSTRAINT FK_Escuta_1
+    FOREIGN KEY (fk_Usuario__Id_Usuario)
+    REFERENCES Usuario_ (Id_Usuario)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE Escuta ADD CONSTRAINT FK_Escuta_2
+    FOREIGN KEY (fk_Conteudo_Id)
+    REFERENCES Conteudo (Id)
+    ON DELETE RESTRICT;
